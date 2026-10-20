@@ -181,8 +181,6 @@ export default function ClientWebsiteView() {
 
     if (video.readyState >= 1) {
       handleLoaded()
-    } else {
-      video.load()
     }
 
     return () => {
@@ -597,9 +595,6 @@ export default function ClientWebsiteView() {
               </aside>
             )}
 
-            {/* Embedded Contextual AI Dock (Anchored above hero-bottom) */}
-            <ContextualAIDock />
-
             <div className="scene-meter" aria-hidden="true">
               <span></span>
             </div>
@@ -626,6 +621,14 @@ export default function ClientWebsiteView() {
               </div>
             </div>
           </div>
+        </section>
+
+        {/* DEDICATED AI DOCK BAND (Below Hero so it never blocks hero content or video) */}
+        <section
+          className="hero-ai-dock-band"
+          aria-label="Instant AI Quote & Diagnostic Dock"
+        >
+          <ContextualAIDock />
         </section>
 
         {/* 5.0-STAR VERIFIED AUTHORITY BENTO SECTION (Immediate Bridge Below Hero Track) */}
@@ -1247,6 +1250,7 @@ export default function ClientWebsiteView() {
             <input
               ref={folderInputRef}
               type="file"
+              aria-label="Upload custom webp frame sequence"
               accept="image/webp,image/png,image/jpeg"
               multiple
               hidden

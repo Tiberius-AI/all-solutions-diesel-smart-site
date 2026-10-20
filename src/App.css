@@ -2607,37 +2607,60 @@
     height: calc(100svh - 58px);
     min-height: 620px;
     max-height: 1080px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding-bottom: 18px;
   }
 }
 
 .codex-site-wrapper .hero-copy {
-  padding-top: clamp(18px, 2.6vh, 42px);
+  padding-top: clamp(20px, 3vh, 46px);
 }
 
 .codex-site-wrapper .hero-copy h1 {
+  font-size: clamp(2.75rem, 4.4vw, 4.65rem);
+  line-height: 1.06;
   margin-bottom: 12px;
 }
 
 .codex-site-wrapper .hero-copy .hero-description {
+  margin-top: 14px;
   margin-bottom: 18px;
 }
 
+.codex-site-wrapper .hero-copy .button {
+  margin-top: 0;
+}
+
 .codex-site-wrapper .hero-copy .hero-proof {
-  margin-top: 18px;
+  margin-top: 20px;
 }
 
 .codex-site-wrapper .hero-bottom {
-  bottom: 132px !important;
+  position: relative !important;
+  bottom: auto !important;
+  margin-top: auto;
+  padding-top: 14px;
+}
+
+.hero-ai-dock-band {
+  background: linear-gradient(180deg, #070b14 0%, #0b1120 100%);
+  border-top: 1px solid rgba(248, 250, 252, 0.14);
+  border-bottom: 1px solid rgba(248, 250, 252, 0.08);
+  padding: 22px 0;
+  position: relative;
+  z-index: 20;
 }
 
 .codex-site-wrapper .contextual-ai-dock-wrapper {
-  position: absolute;
-  left: 50%;
-  bottom: 14px;
-  transform: translateX(-50%);
+  position: relative;
+  left: auto;
+  bottom: auto;
+  transform: none;
   z-index: 20;
-  width: min(1240px, calc(100% - 64px));
-  margin: 0;
+  width: min(1280px, calc(100% - 48px));
+  margin: 0 auto;
 }
 
 .codex-site-wrapper .helper-launcher {
@@ -2778,7 +2801,6 @@
 
   .codex-site-wrapper .contextual-ai-dock-wrapper {
     width: calc(100% - 28px);
-    bottom: 10px;
   }
 
   .codex-site-wrapper .dock-quick-chips {
@@ -2788,10 +2810,6 @@
   .codex-site-wrapper .dock-main-controls {
     grid-template-columns: 1.3fr auto 100px;
     gap: 6px;
-  }
-
-  .codex-site-wrapper .hero-bottom {
-    bottom: 148px !important;
   }
 }
 
@@ -2862,10 +2880,19 @@
   }
 
   .codex-site-wrapper .dock-input-group,
+  .codex-site-wrapper .dock-text-input,
   .codex-site-wrapper .dock-photo-btn,
   .codex-site-wrapper .dock-submit-btn,
-  .codex-site-wrapper .menu-toggle {
+  .codex-site-wrapper .menu-toggle,
+  .btn-json-config,
+  .codex-site-wrapper .demo-bar a,
+  .codex-site-wrapper .trust-source a,
+  .codex-site-wrapper .proof-source a,
+  .codex-site-wrapper .local-business address a,
+  .codex-site-wrapper .full-footer a {
     min-height: 44px;
+    display: inline-flex;
+    align-items: center;
   }
 }
 

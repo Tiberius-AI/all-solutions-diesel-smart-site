@@ -222,6 +222,7 @@ export default function ContextualAIDock() {
         <input
           ref={fileInputRef}
           type="file"
+          aria-label="Upload vehicle or project photos"
           accept="image/jpeg,image/png,image/webp"
           multiple
           style={{ display: 'none' }}
