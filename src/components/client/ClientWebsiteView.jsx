@@ -248,7 +248,7 @@ export default function ClientWebsiteView() {
       section.dataset.progress = p.toFixed(3)
       section.style.setProperty('--scene-progress', String(p))
 
-      const isPast = rect.bottom < window.innerHeight * 0.72 || p >= 0.94
+      const isPast = rect.bottom < 120
       setPastHero((prev) => (prev !== isPast ? isPast : prev))
 
       const video = videoRef.current
