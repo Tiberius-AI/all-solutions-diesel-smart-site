@@ -507,7 +507,7 @@ export default function ClientWebsiteView() {
               <h1 id="hero-title">
                 {isDiesel ? (
                   <>
-                    Diesel, Auto &amp; Fleet
+                    Diesel, Auto &amp; Fleet{' '}
                     <br />
                     <em>Built for the Hill Country.</em>
                   </>
@@ -720,7 +720,7 @@ export default function ClientWebsiteView() {
               <h2>
                 {isDiesel ? (
                   <>
-                    Diesel trucks, auto repair,
+                    Diesel trucks, auto repair,{' '}
                     <br />
                     fleets &amp; heavy equipment.
                   </>
@@ -928,7 +928,7 @@ export default function ClientWebsiteView() {
               From {activeTenant.companyName}’s shop bays &amp; customers
             </p>
             <h2 id="proof-title">
-              Real trucks. Real heavy equipment.
+              Real trucks. Real heavy equipment.{' '}
               <br />
               Real Hill Country reviews.
             </h2>
@@ -999,7 +999,7 @@ export default function ClientWebsiteView() {
           <div>
             <p className="section-kicker">Let’s talk about your truck, car, or fleet</p>
             <h2 id="quote-invite-title">
-              Less guesswork.
+              Less guesswork.{' '}
               <br />A clearer diagnostic conversation.
             </h2>
             <p>
@@ -1088,7 +1088,7 @@ export default function ClientWebsiteView() {
             <div className="local-business" id="service-area">
               <p className="section-kicker">Spring Branch &amp; Texas Hill Country</p>
               <h2>
-                Based at 113 Remington Rd.
+                Based at 113 Remington Rd.{' '}
                 <br />
                 Shop &amp; Mobile Service.
               </h2>
@@ -1142,7 +1142,7 @@ export default function ClientWebsiteView() {
           <div className="inquiry-copy">
             <p className="eyebrow">Your truck, car, or fleet. Your next step.</p>
             <h2 id="inquiry-title">
-              Let’s get the
+              Let’s get the{' '}
               <br />
               symptoms down.
             </h2>
@@ -1425,8 +1425,9 @@ export default function ClientWebsiteView() {
               justifyContent: 'center',
               gap: '6px',
               textDecoration: 'none',
-              color: 'inherit',
+              color: '#ffffff',
               fontWeight: 600,
+              minHeight: '48px',
             }}
           >
             <svg

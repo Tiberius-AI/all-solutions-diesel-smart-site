@@ -2854,6 +2854,19 @@
     width: calc(100% - 28px);
     margin: 0 auto;
   }
+
+  .codex-site-wrapper .mobile-contact-bar a,
+  .codex-site-wrapper .mobile-contact-bar button {
+    color: #ffffff !important;
+    min-height: 48px;
+  }
+
+  .codex-site-wrapper .dock-input-group,
+  .codex-site-wrapper .dock-photo-btn,
+  .codex-site-wrapper .dock-submit-btn,
+  .codex-site-wrapper .menu-toggle {
+    min-height: 44px;
+  }
 }
 
 @media (max-width: 640px) {

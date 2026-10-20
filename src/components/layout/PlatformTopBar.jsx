@@ -220,6 +220,7 @@ export default function PlatformTopBar() {
               <button
                 type="button"
                 className="icon-close-btn"
+                aria-label="Close configuration modal"
                 onClick={() => setShowConfigModal(false)}
               >
                 <X size={18} />
