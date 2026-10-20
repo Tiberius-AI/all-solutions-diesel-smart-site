@@ -1,0 +1,50 @@
+@layer reviewstrip {
+ .review-strip {background:#f5f4f0;border-bottom:1px solid #dddeda;padding:34px 0}
+ .review-strip-layout {display:grid;grid-template-columns:minmax(0,1fr)}
+ .review-strip--owner .review-strip-layout {grid-template-columns:minmax(0,.95fr) minmax(0,1.05fr);gap:38px}
+ .review-owner {display:grid;grid-template-columns:105px minmax(0,1fr);align-items:center;gap:23px;padding-right:34px;border-right:1px solid #d4d4ce}
+ .review-owner-photo,.review-owner-placeholder {width:105px;height:137px;object-fit:cover;border-radius:3px}
+ .review-owner-placeholder {display:flex;flex-direction:column;justify-content:center;align-items:center;gap:9px;color:#6a716f;background:#e7e7e1;border:1px solid #d4d5ce;font-size:.65rem}
+ .review-owner-placeholder svg {width:50px;height:50px;stroke:currentColor;stroke-width:1.6}
+ .review-eyebrow {font-size:.62rem;font-weight:600;letter-spacing:.04em;margin:0 0 8px;color:#a32e2e}
+ .review-owner h2,.review-rail h2 {font-size:1.3rem;line-height:1.25;letter-spacing:-.035em;margin:0}
+ .owner-message {font-size:.84rem;line-height:1.65;color:#4e575b;margin:12px 0}
+ .owner-signature {font-size:.69rem;font-weight:600;margin:0;color:#343d41}
+ .owner-signature span {font-weight:400;color:#58616b}
+ .review-rail {min-width:0}
+ .review-rail-heading {display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px;min-height:42px}
+ .review-rail-heading>div:first-child {min-width:0}
+ .review-rail-heading .google-review-badge {flex-wrap:wrap}
+ .review-controls {display:flex;align-items:center;gap:10px;flex-shrink:0}
+ .review-controls[hidden] {display:none}
+ .review-controls button {width:40px;height:40px;min-width:40px;display:grid;place-items:center;background:transparent;border:1px solid #b8bdbb;border-radius:50%;font-size:1.15rem;cursor:pointer;color:#24292f}
+ .review-controls button:disabled {opacity:.35;cursor:default}
+ .review-controls button:not(:disabled):hover {background:#fff;border-color:#8b2828}
+ .review-controls span {font-size:.66rem;min-width:30px;text-align:center;color:#58616b}
+ .review-track {display:grid;grid-auto-flow:column;grid-auto-columns:calc((100% - 32px)/3);gap:16px;overflow-x:auto;overscroll-behavior-inline:contain;scroll-snap-type:x mandatory;scrollbar-width:thin;scrollbar-color:#b9bcb7 transparent;padding-bottom:8px}
+ .review-strip--owner .review-track {grid-auto-columns:100%}
+ .review-card {position:relative;scroll-snap-align:start;scroll-snap-stop:always;padding:18px 20px;background:#fff;border:1px solid #deded8;min-width:0;display:flex;flex-direction:column;min-height:140px}
+ .review-card-top {display:flex;justify-content:space-between;gap:14px;align-items:center}
+ .review-author {font-size:.77rem;font-weight:600}
+ .review-rating {color:#8b650c;font-size:.84rem;letter-spacing:.07em;white-space:nowrap}
+ .review-card blockquote {margin:12px 0 15px;flex:1;max-height:115px;overflow-y:auto;scrollbar-width:thin}
+ .review-card blockquote p {margin:0;font-size:1rem;line-height:1.5;letter-spacing:-.015em;overflow-wrap:anywhere}
+ .review-card-source {display:flex;flex-wrap:wrap;gap:6px 12px;font-size:.64rem;color:#58616b}
+ .review-card-source a {text-decoration:underline;text-underline-offset:3px}
+ .review-preview-note {font-size:.62rem;line-height:1.5;color:#646968;margin:7px 0 0}
+ .review-strip :focus-visible {outline:2px solid #a32e2e;outline-offset:3px}
+ @media(max-width:1100px) {.review-strip--owner .review-strip-layout {gap:25px}.review-owner {grid-template-columns:78px minmax(0,1fr);gap:17px;padding-right:24px}.review-owner-photo,.review-owner-placeholder {width:78px;height:110px}.review-track {grid-auto-columns:calc((100% - 16px)/2)}}
+ @media(max-width:767px) {
+  .review-strip {padding:27px 0}
+  .review-strip--owner .review-strip-layout {grid-template-columns:minmax(0,1fr);gap:23px}
+  .review-owner {border-right:0;border-bottom:1px solid #d4d4ce;padding:0 0 23px;grid-template-columns:78px minmax(0,1fr)}
+  .review-owner h2,.review-rail h2 {font-size:1.14rem}
+  .owner-message {font-size:.78rem;margin:9px 0}
+  .review-rail-heading {margin-bottom:12px}
+  .review-track {grid-auto-columns:100%}
+  .review-card {padding:17px;min-height:145px}
+  .review-controls {gap:6px}
+  .review-controls button {width:44px;height:44px}
+  .review-controls span {min-width:25px}
+ }
+}

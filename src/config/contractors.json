@@ -1,0 +1,418 @@
+{
+  "platformPlans": [
+    {
+      "id": "rent",
+      "name": "Rent (Managed AI + Scrollytelling)",
+      "priceRange": "$297–$397/mo",
+      "badge": "Fastest Launch",
+      "highlights": [
+        "Turnkey 24fps Scroll-Scrubbing Video + 150-Frame Site",
+        "Embedded Contextual AI Dock + Vision Diagnostic Pre-Scan",
+        "3-Pane Unified Conversation Room + Missed-Call Rescue",
+        "TOS-Safe Conversational Review Engine"
+      ]
+    },
+    {
+      "id": "rent-to-own",
+      "name": "Rent-to-Own (Equity Builder)",
+      "priceRange": "$497–$597/mo",
+      "badge": "Most Popular",
+      "highlights": [
+        "Everything in Rent + 100% Ownership After 12 Months",
+        "Custom Camera Orbit Video & Frame-Locked Scrubbing Pipeline",
+        "Alfred 3-Mode Co-Pilot (Autopilot, Draft-First, Human Takeover)",
+        "Seamless Lead Routing Switch (Tiberius Account → Client Account)"
+      ]
+    },
+    {
+      "id": "buy-outright",
+      "name": "Buy Outright (Full Source + IP)",
+      "priceRange": "$2,500+",
+      "badge": "Zero Monthly Lease",
+      "highlights": [
+        "Immediate 100% Code, Domain & Custom Asset Ownership",
+        "Multi-Bay Dispatch Routing & Custom LLM Extraction Schema",
+        "Self-Hosted or Managed API Pass-Through",
+        "Lifetime Updates to Scrollytelling & Back-Office Engine"
+      ]
+    }
+  ],
+  "tenants": [
+    {
+      "id": "all-solutions-diesel",
+      "companyName": "All Solutions Diesel and Auto Repair",
+      "legalName": "All Solutions Diesel and Auto Repair LLC",
+      "tagline": "All Diesel and Hydraulic Solutions",
+      "niche": "Heavy-Duty Diesel, 6.0 Powerstroke, Fleet & Auto Repair",
+      "city": "Spring Branch & Texas Hill Country",
+      "addressLine": "113 Remington Road, Spring Branch, TX 78070",
+      "hoursDisplay": "Mon–Fri 9:00 AM – 5:00 PM · Services by Appointment Only",
+      "brandColor": "#c93b2b",
+      "accentSecondary": "#f59e0b",
+      "phoneDisplay": "(830) 388-1458",
+      "phoneRaw": "830-388-1458",
+      "phoneTel": "tel:8303881458",
+      "emailDisplay": "info@allsolutionsrepairs.com",
+      "websiteUrl": "https://allsolutionsrepairs.com/",
+      "synchronyUrl": "https://www.mysynchrony.com/mmc/NT237455907",
+      "facebookUrl": "https://www.facebook.com/people/All-Solutions-Diesel-Auto-Repair/61555046789454/",
+      "instagramUrl": "https://www.instagram.com/allsolutionsdieselandauto",
+      "bookingUrl": "https://cal.com/tiberius/contractor",
+      "googleReviewUrl": "https://www.google.com/maps/search/?api=1&query=All+Solutions+Diesel+and+Auto+Repair+113+Remington+Road+Spring+Branch+TX",
+      "leadRouting": {
+        "activeMode": "tiberius",
+        "tiberius": {
+          "mode": "tiberius",
+          "badgeLabel": "Lead Routing: My Accounts (Tiberius)",
+          "accountOwner": "Michael · Tiberius Smart Sites",
+          "calcomHandle": "tiberius",
+          "calcomEventSlug": "contractor",
+          "bookingUrl": "https://cal.com/tiberius/contractor",
+          "destinationEmail": "michael@tiberiussmartsites.com",
+          "destinationInbox": "Tiberius Master Conversation Room (My Accounts)",
+          "disclosureNote": "All AI lead capture elements (AI Dock, Chat, 3-Step Quote Request, and Calendar) currently route to Michael's Tiberius accounts first and can be switched to All Solutions' account in one click."
+        },
+        "client": {
+          "mode": "client",
+          "badgeLabel": "Lead Routing: Client Account (All Solutions)",
+          "accountOwner": "All Solutions Diesel and Auto Repair LLC",
+          "calcomHandle": "all-solutions-repairs",
+          "calcomEventSlug": "service-appointment",
+          "bookingUrl": "https://cal.com/all-solutions-repairs/service-appointment",
+          "destinationEmail": "info@allsolutionsrepairs.com",
+          "destinationInbox": "All Solutions Shop Dispatch (113 Remington Rd, Spring Branch, TX)",
+          "disclosureNote": "All AI lead capture elements are routed directly to All Solutions Diesel and Auto Repair (info@allsolutionsrepairs.com · 830-388-1458)."
+        }
+      },
+      "heroHeadline": "Keeping America on the road.",
+      "heroSubheadline": "Quality maintenance and repair for all makes and models—from 6.0 Powerstrokes, heavy-duty commercial fleets, and construction or farm equipment to your family’s vehicle. Scroll under the hood or drop a photo below.",
+      "trustCredentials": [
+        { "metric": "All Makes", "label": "Diesel, gas, fleet & heavy equipment" },
+        { "metric": "6.0L & HD", "label": "Powerstroke, electrical & diesel pros" },
+        { "metric": "Synchrony", "label": "Car Care Credit financing available" },
+        { "metric": "830-388-1458", "label": "113 Remington Rd · Spring Branch, TX" }
+      ],
+      "media": {
+        "poster": "/assets/diesel/poster.webp",
+        "video": "/videos/hero-scroll.mp4",
+        "detailImage": "/assets/diesel/photos/IMG_4529.jpg",
+        "approachImage": "/assets/diesel/photos/IMG_3841.jpg",
+        "synchronyImage": "/assets/diesel/photos/IMG_2500.jpg",
+        "logoImage": "/assets/diesel/photos/logo_rjpic.jpg",
+        "helperAvatar": "/assets/diesel/photos/logo_rjpic.jpg",
+        "duration": 8,
+        "fps": 24,
+        "width": 1280,
+        "height": 720
+      },
+      "frameSequence": {
+        "totalFrames": 150,
+        "basePath": "/sequences/all-solutions-diesel/frame_",
+        "extension": ".webp",
+        "wireframeModel": "diesel-powertrain-orbit",
+        "cameraLabel": "TIBERIUS × ALL SOLUTIONS // 24FPS TURBO DIESEL BAY REVEAL"
+      },
+      "verifiedAuthority": {
+        "schemaType": "AutoRepair",
+        "ratingValue": 5.0,
+        "reviewCount": 2,
+        "caption": "Verified Customer Reviews · Spring Branch & Texas Hill Country",
+        "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=All+Solutions+Diesel+and+Auto+Repair+113+Remington+Road+Spring+Branch+TX",
+        "pills": [
+          "Spring Branch, TX Verified",
+          "6.0 Powerstroke & Fleet Pros",
+          "All Makes, Models & Equipment"
+        ],
+        "featuredReview": {
+          "initials": "JM",
+          "author": "Jorge M.",
+          "meta": "Verified Fleet Owner Review • Spring Branch, TX",
+          "datePublished": "2026-06-15",
+          "segments": [
+            { "text": "We run a small business of our own. " },
+            {
+              "mark": "I wouldn't trust my fleet trucks to anyone else",
+              "markClass": "mark-1"
+            },
+            { "text": ". All Solutions is " },
+            {
+              "mark": "so knowledgeable with every make & model",
+              "markClass": "mark-2"
+            },
+            { "text": ". From small jobs to major stuff, " },
+            {
+              "mark": "they do it all. Great family business",
+              "markClass": "mark-3"
+            },
+            { "text": ". Highly recommended." }
+          ],
+          "ownerReply": {
+            "badge": "All Solutions Diesel & Auto Repair (Owner) • Direct Response",
+            "text": "Thank you for trusting us with your fleet trucks, Jorge! Keeping hard-working local businesses on the road is what we’re here for."
+          }
+        },
+        "endorsementReview": {
+          "initials": "CD",
+          "author": "Christina D.",
+          "meta": "Verified Engine Replacement Review • Spring Branch, TX",
+          "datePublished": "2026-06-15",
+          "quote": "Very responsive, informative and helpful. All Solutions helped us diagnose and replace our vehicle’s engine. They were always quick to respond and came to our house to diagnose the issue. I highly recommend and we will never use anyone else.",
+          "footerPill": "100% 5.0-Star Customer Satisfaction · Family Owned & Operated"
+        },
+        "actionCard": {
+          "kicker": "BY APPOINTMENT ONLY · 113 REMINGTON RD, SPRING BRANCH",
+          "headline": "Need Diesel, Fleet, or Auto Repair You Can Trust?",
+          "subtext": "Call (830) 388-1458 directly or start an AI diagnostic & quote request online. Synchrony Car Care financing available.",
+          "primaryCtaLabel": "Request a Repair Quote",
+          "secondaryLinkLabel": "Find Us on Google Maps (Spring Branch, TX)"
+        }
+      },
+      "projects": [
+        {
+          "city": "Commercial Semi & Trucking Fleet",
+          "image": "/assets/diesel/photos/IMG_2949.jpg",
+          "scope": "Class-8 Heavy Diesel Turbo, Air Brakes & Fleet Maintenance",
+          "quote": "We run a small business of our own. I wouldn't trust my fleet trucks to anyone else. All Solutions is so knowledgeable with every make & model. From small jobs to major stuff. They do it all.",
+          "author": "Jorge M. · Commercial Fleet Owner"
+        },
+        {
+          "city": "Full Engine Replacement & Drop",
+          "image": "/assets/diesel/photos/IMG_0971.jpg",
+          "scope": "Complete Engine Diagnosis, Subframe Drop & Replacement",
+          "quote": "Very responsive, informative and helpful. All Solutions helped us diagnose and replace our vehicle's engine. They were always quick to respond and came to our house to diagnose the issue.",
+          "author": "Christina D. · Spring Branch, TX"
+        },
+        {
+          "city": "Heavy Construction & Hydro-Vac Equipment",
+          "image": "/assets/diesel/photos/IMG_7354.jpg",
+          "scope": "RAMVAC HX-12 Heavy Equipment, Hydraulics & Diesel Systems",
+          "quote": "Whether it be on your personal vehicle, farm equipment, construction equipment, or providing maintenance and repairs for our trucking industry—we keep America on the road.",
+          "author": "All Solutions Shop · Texas Hill Country"
+        },
+        {
+          "city": "Heavy-Duty Dually & 6.0 Powerstroke",
+          "image": "/assets/diesel/photos/IMG_1169.jpg",
+          "scope": "6.0 Powerstroke, Cummins & Heavy-Duty Pickup Diagnostics",
+          "quote": "We specialize in electrical diagnosis, fleet maintenance, heavy duty diesels, and 6.0 Powerstrokes with attention to detail on every truck.",
+          "author": "113 Remington Rd · Spring Branch, TX"
+        },
+        {
+          "city": "Transmission, Clutch & Drivetrain",
+          "image": "/assets/diesel/photos/IMG_5138.jpg",
+          "scope": "Flywheel, Clutch, Bellhousing & Transmission Overhaul",
+          "quote": "Great family business. Highly recommended for everything from routine maintenance to major engine and transmission work.",
+          "author": "Jorge M. · Verified Client"
+        },
+        {
+          "city": "SUVs, Brakes, Steering & Suspension",
+          "image": "/assets/diesel/photos/IMG_0961.jpg",
+          "scope": "Full-Size SUV Engine Work, Steering, Suspension & Brakes",
+          "quote": "I highly recommend and we will never use anyone else.",
+          "author": "Christina D. · Verified Client"
+        }
+      ],
+      "faqs": [
+        {
+          "q": "What types of vehicles and equipment do you work on?",
+          "a": "We service all makes and models—including personal cars and family SUVs, heavy-duty diesel pickups (6.0 Powerstroke specialists, Cummins, Duramax), commercial fleet trucks, Class-8 semi trucks (including air brakes), farm equipment, and construction/hydraulic equipment."
+        },
+        {
+          "q": "Do I need an appointment before bringing my vehicle or truck in?",
+          "a": "Yes—services are by appointment only so our technicians can dedicate bay time and diagnostic equipment to your vehicle. We are open Monday through Friday, 9:00 AM – 5:00 PM at 113 Remington Road, Spring Branch, TX. Call (830) 388-1458 or request an appointment online."
+        },
+        {
+          "q": "Do you offer financing for engine, transmission, or diesel repairs?",
+          "a": "Yes! We offer Car Care Credit by Synchrony so you can get your vehicle or work truck repaired today and pay over time with convenient monthly payments. You can apply directly online via our Synchrony Car Care link."
+        },
+        {
+          "q": "What do you specialize in?",
+          "a": "We specialize in pinpoint electrical diagnosis, commercial fleet maintenance packages, heavy-duty diesels, and 6.0 Powerstrokes—along with full engine replacements, transmissions, steering & suspension, brakes, air brakes, and tune-ups."
+        },
+        {
+          "q": "Can I upload photos of a check-engine code, leak, or part?",
+          "a": "Yes! Upload up to 3 photos (JPG, PNG, or WebP) in the AI Dock or Quote Request form—such as a dashboard warning light, engine bay, tire/suspension wear, or VIN plate. Our Vision AI pre-scans the details so we can prepare an accurate diagnostic plan."
+        },
+        {
+          "q": "Where do online AI chat, quote requests, and demo bookings go right now?",
+          "a": "Phone calls to (830) 388-1458 dial All Solutions Diesel and Auto Repair directly. During our initial Smart Site rollout, interactive AI lead capture elements (AI Dock, Assistant Chat, Quote Wizard, and Calendar) route to Michael's Tiberius accounts first and can be switched to All Solutions' direct inbox in one click."
+        }
+      ],
+      "pricingRules": {
+        "currency": "USD",
+        "freeInspection": false,
+        "baseDiagnostic": 125,
+        "minimumDispatch": 125,
+        "services": [
+          {
+            "name": "Electrical Diagnosis & Check-Engine Troubleshooting",
+            "category": "Diagnose an issue",
+            "description": "Pinpoint electrical diagnosis, wiring harness faults, no-start conditions, sensor codes, and diesel FICM/injector troubleshooting for all makes and models.",
+            "range": "$125 – $350",
+            "avgValue": 225,
+            "urgency": "High — Active Fault / Warning Light",
+            "duration": "1–3 hrs"
+          },
+          {
+            "name": "Heavy-Duty Diesel & 6.0 Powerstroke Repair",
+            "category": "Diesel & Powerstroke",
+            "description": "6.0 Powerstroke specialists, EGR & oil coolers, turbochargers, high-pressure oil/fuel systems, heavy-duty pickups, and Class-8 commercial diesels.",
+            "range": "$650 – $4,800",
+            "avgValue": 2450,
+            "urgency": "High — Power Loss / Coolant or Fuel Issue",
+            "duration": "1–3 days"
+          },
+          {
+            "name": "Engine Repair & Full Engine Replacement",
+            "category": "Major mechanical",
+            "description": "Complete gas and diesel engine repair, head gaskets, timing systems, and full engine replacements for personal vehicles and work trucks.",
+            "range": "$1,800 – $9,500",
+            "avgValue": 5400,
+            "urgency": "Critical — Major Powertrain Scope",
+            "duration": "2–5 days"
+          },
+          {
+            "name": "Transmission, Clutch & Drivetrain Service",
+            "category": "Drivetrain",
+            "description": "Transmission repair and replacement, clutches, flywheels, transfer cases, differentials, and heavy-duty driveline service.",
+            "range": "$850 – $5,200",
+            "avgValue": 2950,
+            "urgency": "High — Shifting / Drivetrain Issue",
+            "duration": "1–3 days"
+          },
+          {
+            "name": "Fleet Maintenance Packages & Air Brakes",
+            "category": "Commercial fleets",
+            "description": "Custom fleet maintenance packages, DOT air brakes, hydraulic systems, farm equipment, and construction equipment maintenance.",
+            "range": "$250 – $1,650",
+            "avgValue": 780,
+            "urgency": "Scheduled Fleet Uptime",
+            "duration": "Same day"
+          },
+          {
+            "name": "Steering, Suspension, Brakes & General Maintenance",
+            "category": "Ride & safety",
+            "description": "Steering and suspension rebuilds, brakes, tune-ups, fluid services, and preventative maintenance to keep your vehicle road-ready.",
+            "range": "$220 – $1,250",
+            "avgValue": 640,
+            "urgency": "Routine — Safety & Preventative",
+            "duration": "2–5 hrs"
+          }
+        ],
+        "aiPromptRules": "Emphasize that All Solutions Diesel and Auto Repair at 113 Remington Road, Spring Branch, TX (830-388-1458) works by appointment only (Mon–Fri 9am–5pm) on all makes and models—personal vehicles, heavy-duty diesels, 6.0 Powerstrokes, commercial fleets, farm equipment, and construction equipment. Mention Synchrony Car Care Credit financing for major engine, transmission, or diesel repairs."
+      },
+      "callouts": [
+        {
+          "id": "callout-1",
+          "startProgress": 0.08,
+          "endProgress": 0.34,
+          "position": "top-left",
+          "eyebrow": "01 // ALL MAKES, MODELS & HEAVY FLEETS",
+          "title": "Personal Vehicles, Heavy Diesels & Commercial Equipment",
+          "body": "As the hood opens in our Spring Branch bay, we handle everything from family SUVs and 6.0 Powerstrokes to Class-8 semi trucks, farm tractors, and construction equipment.",
+          "metric": "Call (830) 388-1458 · By Appointment",
+          "frameRange": "SCENE 01 // 08%–34%"
+        },
+        {
+          "id": "callout-2",
+          "startProgress": 0.38,
+          "endProgress": 0.65,
+          "position": "top-right",
+          "eyebrow": "02 // ELECTRICAL & POWERTRAIN PRECISION",
+          "title": "6.0 Powerstroke, Electrical Diagnosis & Engine Replacements",
+          "body": "Watch the amber diagnostic trace across the turbocharger and fuel rails. We pinpoint complex electrical faults, air brakes, transmissions, and full engine swaps.",
+          "metric": "Synchrony Car Care Financing Available",
+          "frameRange": "SCENE 02 // 38%–65%"
+        },
+        {
+          "id": "callout-3",
+          "startProgress": 0.69,
+          "endProgress": 0.95,
+          "position": "top-left",
+          "eyebrow": "03 // ALFRED AI + SHOP HANDSHAKE",
+          "title": "Less Guesswork. A Better First Diagnostic Conversation.",
+          "body": "Upload up to 3 photos or describe your symptoms below. Alfred pre-scans your vehicle details, shares ballpark ranges, and logs your appointment request immediately.",
+          "metric": "Instant SMS + Photo Diagnostic Scope",
+          "frameRange": "SCENE 03 // 69%–95%"
+        }
+      ]
+    },
+    {
+      "id": "scg-roofing",
+      "companyName": "SCG Roofing",
+      "niche": "Roofing, Ventilation & Exterior Systems",
+      "city": "Hooksett & Southern NH",
+      "addressLine": "146 Londonderry Turnpike, Unit 20, Hooksett, NH 03106",
+      "brandColor": "#d97742",
+      "accentSecondary": "#e8a578",
+      "phoneDisplay": "(603) 420-2824",
+      "emailDisplay": "info@SCGRoofs.com",
+      "bookingUrl": "https://cal.com/tiberius/contractor",
+      "googleReviewUrl": "https://g.page/r/scg-roofing-hooksett/review",
+      "heroHeadline": "For the home under your roof.",
+      "heroSubheadline": "A drip after rain. Shingles showing their age. A project you’re ready to start. Scroll to inspect the structure—or drop a photo below for an instant AI scope.",
+      "trustCredentials": [
+        { "metric": "325+", "label": "Roofs completed" },
+        { "metric": "40+", "label": "Years of experience" },
+        { "metric": "Licensed & insured", "label": "Southern NH coverage" },
+        { "metric": "Locally based", "label": "Hooksett, NH (03106)" }
+      ],
+      "media": {
+        "poster": "/assets/roofing/reveal-v1/poster.webp",
+        "video": "/assets/roofing/reveal-v3/scrub.mp4",
+        "detailImage": "/assets/roofing/reveal-v2/roof-detail.webp",
+        "helperAvatar": "/assets/roofing/helper-v1/avatar.webp",
+        "duration": 8,
+        "fps": 24,
+        "width": 1920,
+        "height": 1080
+      },
+      "frameSequence": {
+        "totalFrames": 150,
+        "basePath": "/sequences/scg-roofing/frame_",
+        "extension": ".webp",
+        "wireframeModel": "roof-truss-orbit",
+        "cameraLabel": "TIBERIUS × HIGGSFIELD // 24FPS ARCHITECTURAL REVEAL + 150-FRAME .WEBP"
+      },
+      "pricingRules": {
+        "currency": "USD",
+        "freeInspection": true,
+        "baseDiagnostic": 0,
+        "minimumDispatch": 350,
+        "services": [
+          {
+            "name": "Roof Leak & Flashing Repair",
+            "category": "Fix a problem",
+            "description": "Leaks, damaged shingles, chimney/valley flashing, or a ceiling stain that appeared after rain.",
+            "range": "$450 – $950",
+            "avgValue": 680,
+            "urgency": "High — Active Water Intrusion",
+            "duration": "2–4 hrs"
+          },
+          {
+            "name": "Full Architectural Roof Replacement",
+            "category": "Plan a new roof",
+            "description": "Complete tear-off, synthetic underlayment, ice & water shield, and architectural shingle system.",
+            "range": "$12,500 – $21,500",
+            "avgValue": 16200,
+            "urgency": "Scheduled Capital Project",
+            "duration": "1–2 days"
+          }
+        ],
+        "aiPromptRules": "Look beyond the surface shingles: always ask about interior stains, attic ventilation, or decking age in Southern NH."
+      },
+      "callouts": [
+        {
+          "id": "callout-1",
+          "startProgress": 0.08,
+          "endProgress": 0.34,
+          "position": "top-left",
+          "eyebrow": "01 // LOOK BEYOND THE SHINGLES",
+          "title": "Structural Diagnostics: Flashing, Decking & Rot",
+          "body": "There’s more protecting your home than the top layer. As the camera orbits, we inspect chimney flashing, valley seals, and plywood decking integrity.",
+          "metric": "325+ NH Roofs Completed",
+          "frameRange": "SCENE 01 // 08%–34%"
+        }
+      ]
+    }
+  ]
+}

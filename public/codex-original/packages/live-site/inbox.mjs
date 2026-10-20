@@ -1,0 +1,43 @@
+import {api,element} from './client.mjs';
+import {photoGallery,closePhotoViewer} from './conversation-photos.mjs';
+import {mountHandoff} from './owner-handoff.mjs';
+const time=value=>value?new Date(value).toLocaleString([],{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'}):'';
+export function mountInbox(){
+ const $=s=>document.querySelector(s);let active=null,timer=null,running=false,enabled=false,listKey='',messageKey='',readSequence=-1,drafts=new Map(),sending=false,failed=null,selecting=false,photoKey='';
+ const layout=$('.inbox-layout');
+ const handoff=mountHandoff({getActive:()=>active,reload:detail});
+ function error(e){$('#inbox-connection').textContent=e.status===401?'Session expired. Please sign in again.':'Updates paused. Retrying…';if(e.status===401){stop();$('#owner-dashboard').hidden=true;$('#owner-login').hidden=false;}}
+ function showMessages(data){const log=$('#thread-messages'),key=JSON.stringify(data.messages);if(key===messageKey)return;messageKey=key;const bottom=log.scrollHeight-log.scrollTop-log.clientHeight<100;
+  log.replaceChildren();for(const m of data.messages){const row=element('article','inbox-message sender-'+m.sender.toLowerCase());row.dataset.messageId=m.id;row.append(element('strong','',m.sender==='AI'?(m.ownerApproved?'Alfred · approved by owner':'Alfred · AI'):m.sender==='Owner'?'You · Owner':'Visitor'),element('p','',m.content),element('small','',time(m.createdAt)+' · '+m.status));if(m.photos?.length){row.classList.add('has-photos');row.append(photoGallery(m.photos,{owner:true,conversation:data.id}));}log.append(row);}if(!data.messages.length)log.append(element('p','empty-thread','This visitor submitted a request. Send a reply to start the chat.'));if(bottom)log.scrollTop=log.scrollHeight;
+ }
+ async function detail(id){
+  const data=await api('owner-conversation',null,{method:'GET',query:{id}});if(active!==id||!enabled)return;handoff.render(data);
+  $('#thread-name').textContent=data.contact.name||'Website visitor';$('#thread-mode').textContent=data.mode+' mode';$('#takeover').hidden=data.mode==='Human';$('#conversation-status').value=data.status;
+  const box=$('#conversation-details');box.replaceChildren();const dl=element('dl');for(const [key,value] of [['Name',data.contact.name||'Not shared yet'],['Contact',data.contact.contactValue||'Not shared yet'],['Service',data.contact.service||'Not specified'],['Project notes',data.contact.description||'No project details yet'],['Location',[data.contact.address,data.contact.zip].filter(Boolean).join(' · ')||'Not shared yet'],['Urgency',data.contact.urgency||'Not specified'],['Property',data.contact.propertyType||'Not specified'],['Roof age',data.contact.roofAge||'Not specified'],['Requested next step',data.contact.intent||'Not specified'],['Contact preference',data.contact.contactMethod?data.contact.contactMethod+' · '+data.contact.contactWindow:'Not shared yet'],['Consent',data.contact.consent?'Inquiry follow-up only':'No contact permission submitted'],['Source',data.source],['Handling',data.mode],['Visitor session',data.visitorCanReply?'Can reply in their original browser':'Expired · this history is saved'],['Created',time(data.createdAt)]])dl.append(element('dt','',key),element('dd','',value));box.append(dl);showMessages(data);
+  const nextPhotos=JSON.stringify(data.inquiryPhotos??[]);if(nextPhotos!==photoKey){photoKey=nextPhotos;$('#thread-project-photos').hidden=!data.inquiryPhotos?.length;$('#inquiry-photo-gallery').replaceChildren(photoGallery(data.inquiryPhotos??[],{owner:true,conversation:id}));}
+  if(data.sequence>readSequence&&!document.hidden&&layout.dataset.view!=='list'&&!$('#conversations-panel').hidden){await api('owner-read',{id,sequence:data.sequence});if(active===id)readSequence=data.sequence;}
+ }
+ async function select(id){
+  if(sending)return;
+  closePhotoViewer();photoKey='';$('#thread-project-photos').hidden=true;$('#inquiry-photo-gallery').replaceChildren();
+  if(active)drafts.set(active,$('#owner-message').value);active=id;handoff.reset();selecting=true;$('#send-reply').disabled=true;$('#owner-message').disabled=true;$('#thread-name').textContent='Loading conversation…';$('#thread-mode').textContent='';$('#thread-messages').replaceChildren();$('#conversation-details').replaceChildren(element('p','','Loading contact details…'));failed=null;messageKey='';readSequence=-1;$('#reply-status').textContent='';$('#owner-message').value=drafts.get(id)||'';$('#thread-empty').hidden=true;$('#thread-content').hidden=false;layout.dataset.view='thread';for(const b of document.querySelectorAll('[data-conversation-id]'))b.setAttribute('aria-pressed',String(b.dataset.conversationId===id));
+  try{await detail(id);if(active===id){selecting=false;$('#send-reply').disabled=false;$('#owner-message').disabled=false;}}catch(e){error(e);}
+ }
+ async function refresh(){if(running||!enabled||document.hidden)return;running=true;try{
+  const data=await api('owner-conversations',null,{method:'GET'});if(!enabled)return;const unread=data.conversations.filter(c=>c.unread).length;$('#inbox-unread').textContent=unread?unread+' unread conversation'+(unread===1?'':'s'):'';const key=JSON.stringify(data.conversations);
+  if(key!==listKey){listKey=key;const list=$('#conversation-list'),focused=document.activeElement?.dataset?.conversationId;list.replaceChildren();for(const c of data.conversations){const b=element('button','conversation-item'+(c.unread?' is-unread':''));b.type='button';b.dataset.conversationId=c.id;b.setAttribute('aria-pressed',String(c.id===active));b.append(element('strong','',c.name||'Website visitor'),element('span','conversation-preview',c.preview||c.service||'New inquiry'),element('small','',time(c.lastActivityAt)+' · '+c.mode+' · '+c.status+(c.hasDraft?' · Draft ready':'')+(c.unread?' · Unread':'')));b.addEventListener('click',()=>select(c.id));list.append(b);}if(!data.conversations.length)list.append(element('p','inbox-empty','No conversations yet. A visitor’s first message will appear here.'));if(focused)list.querySelector(`[data-conversation-id="${focused}"]`)?.focus();}
+  if(active){await detail(active);if(selecting){selecting=false;$('#send-reply').disabled=false;$('#owner-message').disabled=false;}}$('#inbox-connection').textContent='Connected · updates every 3 seconds';
+ }catch(e){error(e);}finally{running=false;}}
+ function start(){if(enabled)return;enabled=true;refresh();timer=setInterval(refresh,3000);}
+ function stop(){closePhotoViewer();photoKey='';$('#inquiry-photo-gallery').replaceChildren();$('#thread-project-photos').hidden=true;$('#inbox-unread').textContent='';enabled=false;clearInterval(timer);active=null;handoff.reset();drafts.clear();failed=null;listKey='';messageKey='';$('#conversation-list').replaceChildren();$('#thread-messages').replaceChildren();$('#conversation-details').replaceChildren();$('#thread-content').hidden=true;$('#thread-empty').hidden=false;$('#owner-message').value='';}
+ $('#inbox-back').addEventListener('click',()=>{layout.dataset.view='list';});$('#details-open').addEventListener('click',()=>{layout.dataset.view='details';$('#details-back').focus();});$('#details-back').addEventListener('click',()=>{layout.dataset.view='thread';$('#details-open').focus();});
+ $('#takeover').addEventListener('click',async()=>{if(!active)return;try{await api('owner-takeover',{id:active});await detail(active);}catch(e){$('#reply-status').textContent=e.message;}});
+ $('#conversation-status').addEventListener('change',async e=>{try{await api('owner-conversation-status',{id:active,status:e.target.value});await refresh();}catch(err){$('#reply-status').textContent=err.message;}});
+ $('#owner-composer').addEventListener('submit',async e=>{e.preventDefault();const message=$('#owner-message').value.trim();if(!active||!message||sending||selecting)return;
+  const id=active,requestId=failed?.id===id&&failed.message===message?failed.requestId:crypto.randomUUID();sending=true;$('#send-reply').disabled=true;$('#owner-message').disabled=true;$('#reply-status').textContent='Sending…';
+  try{await api('owner-reply',{conversationId:id,requestId,message});failed=null;drafts.delete(id);$('#owner-message').value='';$('#reply-status').textContent='Delivered · available in the visitor’s chat';await detail(id);}
+  catch(err){failed={id,message,requestId};$('#reply-status').textContent='Delivery not confirmed. '+err.message+' Press Send reply to retry.';}
+  finally{sending=false;$('#send-reply').disabled=false;$('#owner-message').disabled=false;}
+ });
+ document.addEventListener('visibilitychange',()=>{if(!document.hidden)refresh();});return {start,stop};
+}
