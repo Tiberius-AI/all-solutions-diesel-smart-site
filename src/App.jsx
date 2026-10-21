@@ -19,7 +19,7 @@ function PlatformShell() {
         '--accent': activeTenant.brandColor,
       }}
     >
-      <PlatformTopBar />
+      {activeView !== 'client' && <PlatformTopBar />}
 
       <div className="platform-view-stage">
         {activeView === 'client' && <ClientWebsiteView />}

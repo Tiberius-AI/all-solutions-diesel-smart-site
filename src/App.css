@@ -2641,8 +2641,8 @@
 
   .codex-site-wrapper .hero-sticky {
     position: sticky;
-    top: 58px;
-    height: calc(100svh - 58px);
+    top: 0;
+    height: 100svh;
     min-height: 620px;
     max-height: 1080px;
     display: flex;
@@ -2917,6 +2917,14 @@
   .codex-site-wrapper .mobile-contact-bar button {
     color: #ffffff !important;
     min-height: 48px;
+  }
+
+  .codex-site-wrapper .mobile-contact-bar > a {
+    background: #166b55 !important;
+  }
+
+  .codex-site-wrapper .mobile-contact-bar > button {
+    background: #242f3a !important;
   }
 
   .codex-site-wrapper .dock-input-group,

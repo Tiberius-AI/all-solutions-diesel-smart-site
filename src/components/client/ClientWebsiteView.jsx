@@ -276,7 +276,7 @@ export default function ClientWebsiteView() {
       const stickyHeight = sticky ? sticky.offsetHeight : window.innerHeight
       const totalScrollable = Math.max(
         1,
-        section.offsetTop + section.offsetHeight - stickyHeight - 58
+        section.offsetTop + section.offsetHeight - stickyHeight
       )
       return Math.min(1, Math.max(0, window.scrollY / totalScrollable))
     }
@@ -432,38 +432,6 @@ export default function ClientWebsiteView() {
       className="codex-site-wrapper"
       style={{ '--accent': activeTenant.brandColor || '#c8232c' }}
     >
-      <a className="skip" href="#main">
-        Skip to content
-      </a>
-
-      {/* DEMO BAR */}
-      <div className="demo-bar">
-        <span>
-          <b>TIBERIUS SMART SITES</b>
-          <span className="demo-separator"> / </span>
-          {activeTenant.companyName} ({activeTenant.city}) ·{' '}
-          <strong>{activeLeadRoute?.badgeLabel || 'AI Leads → My Accounts'}</strong>
-        </span>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '14px', flexWrap: 'wrap' }}>
-          <a
-            href={rawPhoneHref}
-            style={{ fontWeight: 700 }}
-            aria-label={`Call ${activeTenant.companyName} at ${activeTenant.phoneDisplay}`}
-          >
-            📞 {activeTenant.phoneDisplay}
-          </a>
-          <a
-            href="#owner"
-            onClick={(e) => {
-              e.preventDefault()
-              setActiveView('backoffice')
-            }}
-          >
-            Owner sign-in <span aria-hidden="true">↗</span>
-          </a>
-        </div>
-      </div>
-
       {/* SITE HEADER */}
       <header className="site-header">
         <a
@@ -1534,12 +1502,14 @@ export default function ClientWebsiteView() {
         <div className="mobile-contact-bar" aria-label="Quick contact">
           <a
             href={rawPhoneHref}
+            className="mobile-call-btn"
             style={{
               display: 'inline-flex',
               alignItems: 'center',
               justifyContent: 'center',
               gap: '6px',
               textDecoration: 'none',
+              background: '#166b55',
               color: '#ffffff',
               fontWeight: 600,
               minHeight: '48px',
@@ -1560,8 +1530,13 @@ export default function ClientWebsiteView() {
           </a>
           <button
             type="button"
+            className="mobile-quote-btn"
             data-engage="text"
             onClick={() => openHelperModal('text')}
+            style={{
+              background: '#242f3a',
+              color: '#ffffff',
+            }}
           >
             <svg
               viewBox="0 0 24 24"
