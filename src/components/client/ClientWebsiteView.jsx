@@ -566,17 +566,6 @@ export default function ClientWebsiteView() {
                     </li>
                   ))}
                 </ul>
-
-                <div className="trust-source">
-                  <a
-                    href={activeTenant.existingWebsiteUrl || 'https://allsolutionsrepairs.com/'}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Published on allsolutionsrepairs.com <span aria-hidden="true">↗</span>
-                    <span className="proof-sr"> (opens in a new tab)</span>
-                  </a>
-                </div>
               </div>
             </div>
 
@@ -601,7 +590,7 @@ export default function ClientWebsiteView() {
 
             <div className="hero-bottom wrap">
               <span>
-                <i></i> 24FPS SCROLL-LOCKED DIESEL ENGINE REVEAL · SPRING BRANCH, TX
+                <i></i> HEAVY-DUTY DIESEL, GAS &amp; FLEET REPAIR · SPRING BRANCH, TX
               </span>
               <div className="motion-tools">
                 <button
