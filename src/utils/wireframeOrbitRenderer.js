@@ -26,6 +26,24 @@ function project3D(x, y, z, yaw, pitch, width, height, scale = 1) {
   }
 }
 
+function drawCoverImage(ctx, img, width, height) {
+  const imgRatio = img.naturalWidth / img.naturalHeight
+  const canvasRatio = width / height
+  let drawW = width
+  let drawH = height
+  let offsetX = 0
+  let offsetY = 0
+
+  if (canvasRatio > imgRatio) {
+    drawH = width / imgRatio
+    offsetY = (height - drawH) * 0.5
+  } else {
+    drawW = height * imgRatio
+    offsetX = (width - drawW) * 0.5
+  }
+  ctx.drawImage(img, offsetX, offsetY, drawW, drawH)
+}
+
 export function renderScrubFrame(
   ctx,
   width,
@@ -38,27 +56,34 @@ export function renderScrubFrame(
 ) {
   ctx.clearRect(0, 0, width, height)
 
-  const progress = Math.max(0, Math.min(1, frameIndex / (totalFrames - 1)))
+  const clampedIndex = Math.max(0, Math.min(totalFrames - 1, Number(frameIndex) || 0))
+  const floorIndex = Math.floor(clampedIndex)
+  const ceilIndex = Math.min(totalFrames - 1, Math.ceil(clampedIndex))
+  const blendAlpha = clampedIndex % 1
+
+  const progress = Math.max(0, Math.min(1, clampedIndex / (totalFrames - 1)))
   const brandColor = tenant.brandColor || '#f97316'
 
-  // 1. If a real .webp frame is loaded for this index, draw cover-fit on canvas
-  const loadedFrame = customFrames?.[frameIndex]
-  if (loadedFrame && loadedFrame.complete && loadedFrame.naturalWidth > 0) {
-    const imgRatio = loadedFrame.naturalWidth / loadedFrame.naturalHeight
-    const canvasRatio = width / height
-    let drawW = width
-    let drawH = height
-    let offsetX = 0
-    let offsetY = 0
+  // 1. If real .webp frames are loaded, draw floor(frameIndex) at globalAlpha = 1
+  // and blend ceil(frameIndex) on top with globalAlpha = frameIndex % 1
+  const floorFrame = customFrames?.[floorIndex]
+  if (floorFrame && floorFrame.complete && floorFrame.naturalWidth > 0) {
+    ctx.save()
+    ctx.globalAlpha = 1
+    drawCoverImage(ctx, floorFrame, width, height)
 
-    if (canvasRatio > imgRatio) {
-      drawH = width / imgRatio
-      offsetY = (height - drawH) * 0.5
-    } else {
-      drawW = height * imgRatio
-      offsetX = (width - drawW) * 0.5
+    const ceilFrame = customFrames?.[ceilIndex]
+    if (
+      ceilIndex !== floorIndex &&
+      blendAlpha > 0 &&
+      ceilFrame &&
+      ceilFrame.complete &&
+      ceilFrame.naturalWidth > 0
+    ) {
+      ctx.globalAlpha = blendAlpha
+      drawCoverImage(ctx, ceilFrame, width, height)
     }
-    ctx.drawImage(loadedFrame, offsetX, offsetY, drawW, drawH)
+    ctx.restore()
     return
   }
 
@@ -219,7 +244,7 @@ export function renderScrubFrame(
     {
       pos: [0.0, 1.28, 0.0],
       label: 'RIDGE & THERMAL VECTOR',
-      metric: `FRAME ${String(frameIndex + 1).padStart(3, '0')}/150`,
+      metric: `FRAME ${String(floorIndex + 1).padStart(3, '0')}/150`,
     },
     {
       pos: [-0.6, -0.85, 1.75],

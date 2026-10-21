@@ -40,10 +40,15 @@ export default function ClientWebsiteView() {
   const [pastHero, setPastHero] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [loadedWebpCount, setLoadedWebpCount] = useState(0)
+  const [isMobileViewport, setIsMobileViewport] = useState(
+    () => typeof window !== 'undefined' && window.innerWidth <= 768
+  )
 
   const seekingRef = useRef(false)
   const desiredTimeRef = useRef(0)
   const seekTimerRef = useRef(0)
+  const targetProgressRef = useRef(0)
+  const currentProgressRef = useRef(0)
 
   // Default to pure Codex video reveal ('video') if tenant has video; fallback to 'wireframe' only if no video
   const hasVideo = Boolean(
@@ -63,9 +68,9 @@ export default function ClientWebsiteView() {
   const helperAvatarSrc =
     activeTenant.media?.helperAvatar || '/assets/diesel/photos/logo_rjpic.jpg'
 
-  // Only preload 150-frame .webp sequence if explicitly configured and not in native MP4 video mode
+  // Preload 150-frame .webp sequence on desktop (> 768px) for sub-frame alpha-blended canvas scrubbing
   useEffect(() => {
-    if (activeVisualMode === 'video' || !activeTenant.frameSequence?.enabled) {
+    if (isMobileViewport || !activeTenant.frameSequence?.basePath) {
       setLoadedWebpCount(0)
       return
     }
@@ -107,7 +112,7 @@ export default function ClientWebsiteView() {
     return () => {
       cancelled = true
     }
-  }, [activeTenant, activeVisualMode])
+  }, [activeTenant, isMobileViewport])
 
   const handleCustomFramesUpload = (e) => {
     const files = Array.from(e.target.files || []).sort((a, b) =>
@@ -138,9 +143,16 @@ export default function ClientWebsiteView() {
     if (!video || activeVisualMode !== 'video') return
 
     const flushSeek = () => {
-      if (motionPaused || seekingRef.current || video.readyState < 1) return
+      if (
+        motionPaused ||
+        window.innerWidth <= 768 ||
+        seekingRef.current ||
+        video.readyState < 1
+      ) {
+        return
+      }
       const target = desiredTimeRef.current
-      if (Math.abs(video.currentTime - target) < 1 / 48) {
+      if (Math.abs(target - video.currentTime) <= 0.01) {
         video.dataset.ready = 'true'
         setVideoReady(true)
         return
@@ -161,6 +173,10 @@ export default function ClientWebsiteView() {
     const handleLoaded = () => {
       seekingRef.current = false
       window.clearTimeout(seekTimerRef.current)
+      if (window.innerWidth <= 768) {
+        video.dataset.ready = 'false'
+        return
+      }
       video.dataset.ready = 'true'
       setVideoReady(true)
       flushSeek()
@@ -169,6 +185,10 @@ export default function ClientWebsiteView() {
     const handleSeeked = () => {
       seekingRef.current = false
       window.clearTimeout(seekTimerRef.current)
+      if (window.innerWidth <= 768) {
+        video.dataset.ready = 'false'
+        return
+      }
       video.dataset.ready = 'true'
       setVideoReady(true)
       flushSeek()
@@ -192,9 +212,17 @@ export default function ClientWebsiteView() {
     }
   }, [activeVisualMode, videoSrc, motionPaused])
 
-  // Sync wireframe canvas when in wireframe mode
+  const hasLoadedFrameSequence = loadedWebpCount >= TOTAL_FRAMES
+
+  // Sync canvas when in wireframe mode OR when 150-frame .webp sequence is loaded (sub-frame alpha blending via float currentFrame)
   useEffect(() => {
-    if (motionPaused || activeVisualMode !== 'wireframe') return
+    if (
+      motionPaused ||
+      isMobileViewport ||
+      (activeVisualMode !== 'wireframe' && !hasLoadedFrameSequence)
+    ) {
+      return
+    }
     const canvas = canvasRef.current
     if (!canvas) return
     const dpr = window.devicePixelRatio || 1
@@ -223,47 +251,90 @@ export default function ClientWebsiteView() {
       false
     )
     ctx.restore()
-  }, [currentFrame, activeVisualMode, activeTenant, motionPaused])
+  }, [
+    currentFrame,
+    activeVisualMode,
+    activeTenant,
+    motionPaused,
+    isMobileViewport,
+    hasLoadedFrameSequence,
+  ])
 
-  // Native rAF scroll progress driver (starts scrubbing immediately from scrollY > 0 through the sticky hero track)
+  // Damped rAF scroll progress driver (> 768px) + locked static frame on mobile (<= 768px)
   useEffect(() => {
     const section = heroSectionRef.current
     if (!section) return
 
     let rafId = 0
 
-    const updateOnScroll = () => {
-      rafId = 0
-      if (motionPaused) return
-
+    const computeRawTargetProgress = () => {
       const sticky = section.querySelector('.hero-sticky')
       const rect = section.getBoundingClientRect()
+      const isPast = rect.bottom < 120
+      setPastHero((prev) => (prev !== isPast ? isPast : prev))
+
       const stickyHeight = sticky ? sticky.offsetHeight : window.innerHeight
       const totalScrollable = Math.max(
         1,
         section.offsetTop + section.offsetHeight - stickyHeight - 58
       )
-      const p = Math.min(1, Math.max(0, window.scrollY / totalScrollable))
+      return Math.min(1, Math.max(0, window.scrollY / totalScrollable))
+    }
 
+    const applyMobileStaticLock = () => {
+      targetProgressRef.current = 0
+      currentProgressRef.current = 0
+      desiredTimeRef.current = 0
+      section.dataset.progress = '0.000'
+      section.style.setProperty('--scene-progress', '0')
+      setScrollProgress(0)
+      setCurrentFrame(0)
+      const video = videoRef.current
+      if (video) {
+        video.dataset.ready = 'false'
+      }
+    }
+
+    const animateScrub = () => {
+      rafId = 0
+      const mobile = window.innerWidth <= 768
+      setIsMobileViewport((prev) => (prev !== mobile ? mobile : prev))
+
+      if (mobile) {
+        applyMobileStaticLock()
+        return
+      }
+
+      if (motionPaused) return
+
+      const targetProgress = targetProgressRef.current
+      let currentProgress = currentProgressRef.current
+      currentProgress += (targetProgress - currentProgress) * 0.08
+
+      if (Math.abs(targetProgress - currentProgress) < 0.0005) {
+        currentProgress = targetProgress
+      }
+      currentProgressRef.current = currentProgress
+
+      const p = currentProgress
       section.dataset.progress = p.toFixed(3)
       section.style.setProperty('--scene-progress', String(p))
 
-      const isPast = rect.bottom < 120
-      setPastHero((prev) => (prev !== isPast ? isPast : prev))
-
       const video = videoRef.current
-      if (activeVisualMode === 'video' && video) {
+      if (activeVisualMode === 'video' && video && !hasLoadedFrameSequence) {
+        video.dataset.ready = videoReady ? 'true' : 'false'
         const duration = Math.min(
           8,
           Number.isFinite(video.duration) && video.duration > 0 ? video.duration : 8
         )
-        desiredTimeRef.current = timeAt(p, duration, 24)
+        const targetTime = timeAt(p, duration, 24)
+        desiredTimeRef.current = targetTime
         if (!seekingRef.current && video.readyState >= 1) {
-          if (Math.abs(video.currentTime - desiredTimeRef.current) > 1 / 48) {
+          if (Math.abs(targetTime - video.currentTime) > 0.01) {
             seekingRef.current = true
             window.clearTimeout(seekTimerRef.current)
             try {
-              video.currentTime = desiredTimeRef.current
+              video.currentTime = targetTime
             } catch {
               seekingRef.current = false
             }
@@ -272,30 +343,69 @@ export default function ClientWebsiteView() {
             }, 450)
           }
         }
+      } else if (video) {
+        video.dataset.ready = 'false'
       }
 
-      setScrollProgress(p)
-      setCurrentFrame(
-        Math.min(TOTAL_FRAMES - 1, Math.max(0, Math.round(p * (TOTAL_FRAMES - 1))))
+      const floatFrameIndex = Math.min(
+        TOTAL_FRAMES - 1,
+        Math.max(0, p * (TOTAL_FRAMES - 1))
       )
-    }
+      setScrollProgress(p)
+      setCurrentFrame(floatFrameIndex)
 
-    const onScroll = () => {
-      if (!rafId) {
-        rafId = window.requestAnimationFrame(updateOnScroll)
+      if (Math.abs(targetProgress - currentProgress) >= 0.0005) {
+        rafId = window.requestAnimationFrame(animateScrub)
       }
     }
 
-    window.addEventListener('scroll', onScroll, { passive: true })
-    window.addEventListener('resize', onScroll, { passive: true })
-    updateOnScroll()
+    const onScrollOrResize = () => {
+      const mobile = window.innerWidth <= 768
+      setIsMobileViewport((prev) => (prev !== mobile ? mobile : prev))
+
+      const rawProgress = computeRawTargetProgress()
+      if (mobile) {
+        if (rafId) {
+          window.cancelAnimationFrame(rafId)
+          rafId = 0
+        }
+        applyMobileStaticLock()
+        return
+      }
+
+      targetProgressRef.current = rawProgress
+      if (!rafId) {
+        rafId = window.requestAnimationFrame(animateScrub)
+      }
+    }
+
+    // Initialize progress on mount
+    const initialMobile = window.innerWidth <= 768
+    setIsMobileViewport(initialMobile)
+    const initialRaw = computeRawTargetProgress()
+    if (initialMobile) {
+      applyMobileStaticLock()
+    } else {
+      targetProgressRef.current = initialRaw
+      currentProgressRef.current = initialRaw
+      rafId = window.requestAnimationFrame(animateScrub)
+    }
+
+    window.addEventListener('scroll', onScrollOrResize, { passive: true })
+    window.addEventListener('resize', onScrollOrResize, { passive: true })
 
     return () => {
       if (rafId) window.cancelAnimationFrame(rafId)
-      window.removeEventListener('scroll', onScroll)
-      window.removeEventListener('resize', onScroll)
+      window.removeEventListener('scroll', onScrollOrResize)
+      window.removeEventListener('resize', onScrollOrResize)
     }
-  }, [activeTenant.id, activeVisualMode, motionPaused])
+  }, [
+    activeTenant.id,
+    activeVisualMode,
+    motionPaused,
+    videoReady,
+    hasLoadedFrameSequence,
+  ])
 
   const isDiesel = activeTenant.id === 'all-solutions-diesel'
   const isScg = activeTenant.id === 'scg-roofing'
@@ -474,7 +584,12 @@ export default function ClientWebsiteView() {
               className="hero-video"
               src={videoSrc}
               data-ready={
-                videoReady && activeVisualMode === 'video' ? 'true' : 'false'
+                !isMobileViewport &&
+                !hasLoadedFrameSequence &&
+                videoReady &&
+                activeVisualMode === 'video'
+                  ? 'true'
+                  : 'false'
               }
               muted
               playsInline
@@ -488,7 +603,12 @@ export default function ClientWebsiteView() {
             <canvas
               ref={canvasRef}
               className="hero-canvas"
-              data-ready={activeVisualMode === 'wireframe' ? 'true' : 'false'}
+              data-ready={
+                !isMobileViewport &&
+                (activeVisualMode === 'wireframe' || hasLoadedFrameSequence)
+                  ? 'true'
+                  : 'false'
+              }
               aria-hidden="true"
             />
 
@@ -592,22 +712,24 @@ export default function ClientWebsiteView() {
               <span>
                 <i></i> HEAVY-DUTY DIESEL, GAS &amp; FLEET REPAIR · SPRING BRANCH, TX
               </span>
-              <div className="motion-tools">
-                <button
-                  id="motion-toggle"
-                  className="text-button"
-                  type="button"
-                  aria-pressed={motionPaused}
-                  onClick={() => setMotionPaused((prev) => !prev)}
-                >
-                  {motionPaused ? 'Enable motion' : 'Pause motion'}
-                </button>
-                <span className="scroll-hint">
-                  {scrollProgress >= 0.98
-                    ? 'THE WHOLE PICTURE ↓'
-                    : 'SCROLL TO REVEAL ↓'}
-                </span>
-              </div>
+              {!isMobileViewport && (
+                <div className="motion-tools">
+                  <button
+                    id="motion-toggle"
+                    className="text-button"
+                    type="button"
+                    aria-pressed={motionPaused}
+                    onClick={() => setMotionPaused((prev) => !prev)}
+                  >
+                    {motionPaused ? 'Enable motion' : 'Pause motion'}
+                  </button>
+                  <span className="scroll-hint">
+                    {scrollProgress >= 0.98
+                      ? 'THE WHOLE PICTURE ↓'
+                      : 'SCROLL TO REVEAL ↓'}
+                  </span>
+                </div>
+              )}
             </div>
           </div>
         </section>

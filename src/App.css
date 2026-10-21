@@ -2847,6 +2847,12 @@
   }
 }
 
+@media (max-width: 768px) {
+  .codex-site-wrapper .motion-tools {
+    display: none !important;
+  }
+}
+
 @media (max-width: 767px) {
   .platform-app-shell {
     max-width: 100vw;
