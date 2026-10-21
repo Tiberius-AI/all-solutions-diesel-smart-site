@@ -10,6 +10,7 @@ import VerifiedAuthorityBento from './VerifiedAuthorityBento'
 gsap.registerPlugin(ScrollTrigger)
 
 const TOTAL_FRAMES = 150
+const MOBILE_SCROLL_SCRUB = false // set to true to enable scroll-scrubbing on mobile
 
 // Exact timeAt formula from reference/codex-original/packages/animation-engine/scroll-video.mjs
 function timeAt(progress, duration = 8, fps = 24) {
@@ -43,6 +44,7 @@ export default function ClientWebsiteView() {
   const [isMobileViewport, setIsMobileViewport] = useState(
     () => typeof window !== 'undefined' && window.innerWidth <= 768
   )
+  const isStaticMobile = isMobileViewport && !MOBILE_SCROLL_SCRUB
 
   const seekingRef = useRef(false)
   const desiredTimeRef = useRef(0)
@@ -68,9 +70,9 @@ export default function ClientWebsiteView() {
   const helperAvatarSrc =
     activeTenant.media?.helperAvatar || '/assets/diesel/photos/logo_rjpic.jpg'
 
-  // Preload 150-frame .webp sequence on desktop (> 768px) for sub-frame alpha-blended canvas scrubbing
+  // Preload 150-frame .webp sequence on desktop (> 768px or when MOBILE_SCROLL_SCRUB is true) for sub-frame alpha-blended canvas scrubbing
   useEffect(() => {
-    if (isMobileViewport || !activeTenant.frameSequence?.basePath) {
+    if (isStaticMobile || !activeTenant.frameSequence?.basePath) {
       setLoadedWebpCount(0)
       return
     }
@@ -112,7 +114,7 @@ export default function ClientWebsiteView() {
     return () => {
       cancelled = true
     }
-  }, [activeTenant, isMobileViewport])
+  }, [activeTenant, isStaticMobile])
 
   const handleCustomFramesUpload = (e) => {
     const files = Array.from(e.target.files || []).sort((a, b) =>
@@ -145,7 +147,7 @@ export default function ClientWebsiteView() {
     const flushSeek = () => {
       if (
         motionPaused ||
-        window.innerWidth <= 768 ||
+        (window.innerWidth <= 768 && !MOBILE_SCROLL_SCRUB) ||
         seekingRef.current ||
         video.readyState < 1
       ) {
@@ -173,7 +175,7 @@ export default function ClientWebsiteView() {
     const handleLoaded = () => {
       seekingRef.current = false
       window.clearTimeout(seekTimerRef.current)
-      if (window.innerWidth <= 768) {
+      if (window.innerWidth <= 768 && !MOBILE_SCROLL_SCRUB) {
         video.dataset.ready = 'false'
         return
       }
@@ -185,7 +187,7 @@ export default function ClientWebsiteView() {
     const handleSeeked = () => {
       seekingRef.current = false
       window.clearTimeout(seekTimerRef.current)
-      if (window.innerWidth <= 768) {
+      if (window.innerWidth <= 768 && !MOBILE_SCROLL_SCRUB) {
         video.dataset.ready = 'false'
         return
       }
@@ -218,7 +220,7 @@ export default function ClientWebsiteView() {
   useEffect(() => {
     if (
       motionPaused ||
-      isMobileViewport ||
+      isStaticMobile ||
       (activeVisualMode !== 'wireframe' && !hasLoadedFrameSequence)
     ) {
       return
@@ -256,11 +258,11 @@ export default function ClientWebsiteView() {
     activeVisualMode,
     activeTenant,
     motionPaused,
-    isMobileViewport,
+    isStaticMobile,
     hasLoadedFrameSequence,
   ])
 
-  // Damped rAF scroll progress driver (> 768px) + locked static frame on mobile (<= 768px)
+  // Damped rAF scroll progress driver (> 768px or when MOBILE_SCROLL_SCRUB is true) + locked static frame on mobile (<= 768px when MOBILE_SCROLL_SCRUB is false)
   useEffect(() => {
     const section = heroSectionRef.current
     if (!section) return
@@ -300,7 +302,7 @@ export default function ClientWebsiteView() {
       const mobile = window.innerWidth <= 768
       setIsMobileViewport((prev) => (prev !== mobile ? mobile : prev))
 
-      if (mobile) {
+      if (mobile && !MOBILE_SCROLL_SCRUB) {
         applyMobileStaticLock()
         return
       }
@@ -364,7 +366,7 @@ export default function ClientWebsiteView() {
       setIsMobileViewport((prev) => (prev !== mobile ? mobile : prev))
 
       const rawProgress = computeRawTargetProgress()
-      if (mobile) {
+      if (mobile && !MOBILE_SCROLL_SCRUB) {
         if (rafId) {
           window.cancelAnimationFrame(rafId)
           rafId = 0
@@ -383,7 +385,7 @@ export default function ClientWebsiteView() {
     const initialMobile = window.innerWidth <= 768
     setIsMobileViewport(initialMobile)
     const initialRaw = computeRawTargetProgress()
-    if (initialMobile) {
+    if (initialMobile && !MOBILE_SCROLL_SCRUB) {
       applyMobileStaticLock()
     } else {
       targetProgressRef.current = initialRaw
@@ -552,7 +554,7 @@ export default function ClientWebsiteView() {
               className="hero-video"
               src={videoSrc}
               data-ready={
-                !isMobileViewport &&
+                !isStaticMobile &&
                 !hasLoadedFrameSequence &&
                 videoReady &&
                 activeVisualMode === 'video'
@@ -572,7 +574,7 @@ export default function ClientWebsiteView() {
               ref={canvasRef}
               className="hero-canvas"
               data-ready={
-                !isMobileViewport &&
+                !isStaticMobile &&
                 (activeVisualMode === 'wireframe' || hasLoadedFrameSequence)
                   ? 'true'
                   : 'false'
@@ -680,7 +682,7 @@ export default function ClientWebsiteView() {
               <span>
                 <i></i> HEAVY-DUTY DIESEL, GAS &amp; FLEET REPAIR · SPRING BRANCH, TX
               </span>
-              {!isMobileViewport && (
+              {!isStaticMobile && (
                 <div className="motion-tools">
                   <button
                     id="motion-toggle"
